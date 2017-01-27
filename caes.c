@@ -95,10 +95,11 @@ static uint32_t mul_by_x(uint32_t w)
 
 static uint32_t mul_by_x2(uint32_t w)
 {
+	uint32_t y = w & 0xc0c0c0c0;
+
 	/* multiply by polynomial 'x^2' (0b100) in GF(2^8) */
-	return ((w & 0x80808080) >> 7) * 0x36 ^
-	       ((w & 0x40404040) >> 6) * 0x1b ^
-	       ((w & 0x3f3f3f3f) << 2);
+	return (y >> 2) ^ (y >> 3) ^ (y >> 5) ^ (y >> 6) ^
+	       (w & 0x3f3f3f3f) << 2;
 }
 
 static uint32_t mix_columns(uint32_t x)
